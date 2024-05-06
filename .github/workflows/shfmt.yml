@@ -1,0 +1,34 @@
+name: Shell Script Lint
+
+# Current default permissions can be viewed here: https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
+permissions: write-all
+
+on:
+  push:
+    paths:
+      - "**.zsh"
+
+jobs:
+  shfmt:
+    name: shfmt
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Run the shfmt
+        uses: luizm/action-sh-checker@v0.1.10
+        with:
+          shfmt: v3.4.0
+          shellcheck: latest
+          check_mode: "all"
+          linter: "shfmt"
+          path: ${{ github.workspace }}/*.zsh
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --local user.name "GitHub Action"
+          git add ${{ github.workspace }}/*.zsh
+          git diff --quiet && git diff --staged --quiet || git commit -m "Apply shfmt fixes"
+          git push

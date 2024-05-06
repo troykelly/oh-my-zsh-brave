@@ -18,7 +18,7 @@ brave() {
     [[ ! -d "$profile_dir" ]] && mkdir -p "$profile_dir"
 
     # Start Brave Browser with the new user profile
-    open -na "Brave Browser" --args "--user-data-dir=$profile_dir"
+    open -na "Brave Browser" --args "--user-data-dir=$profile_dir --enable-profile-shortcut-manager"
 }
 
 # Autocomplete function for Brave Browser Profiles
